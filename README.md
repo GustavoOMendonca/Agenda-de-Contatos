@@ -43,3 +43,4 @@ src/
 ├── Main.java
 ├── Cadastro.java
 └── utils/
+    └── Entrada.java
