@@ -2,13 +2,17 @@ import java.util.ArrayList;
 
 public class Cadastro {
 
-    private ArrayList<String> contatos = new ArrayList<>();
+    private ArrayList<Contato> contatos = new ArrayList<>();
 
     public void adicionarContato() {
 
         String nome = utils.Entrada.lerTexto("Digite o nome do contato: ");
 
-        contatos.add(nome);
+        String telefone = utils.Entrada.lerTexto("Digite o telefone: ");
+
+        Contato contato = new Contato(nome, telefone);
+
+        contatos.add(contato);
 
         System.out.println("Contato adicionado com sucesso.");
     }
@@ -16,6 +20,7 @@ public class Cadastro {
     public void listarContatos() {
 
         if (contatos.isEmpty()) {
+
             System.out.println("Nenhum contato cadastrado.");
             return;
         }
@@ -23,6 +28,7 @@ public class Cadastro {
         System.out.println("\n===== CONTATOS =====");
 
         for (int i = 0; i < contatos.size(); i++) {
+
             System.out.println((i + 1) + " - " + contatos.get(i));
         }
     }
@@ -33,17 +39,18 @@ public class Cadastro {
 
         boolean encontrado = false;
 
-        for (String contato : contatos) {
+        for (Contato contato : contatos) {
 
-            if (contato.equalsIgnoreCase(busca)) {
+            if (contato.getNome().equalsIgnoreCase(busca)) {
 
-                System.out.println("Contato encontrado: " + contato);
+                System.out.println(contato);
 
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
+
             System.out.println("Contato não encontrado.");
         }
     }
@@ -64,9 +71,14 @@ public class Cadastro {
             return;
         }
 
-        String novoNome = utils.Entrada.lerTexto("Digite o novo nome: ");
+        String novoNome = utils.Entrada.lerTexto("Novo nome: ");
 
-        contatos.set(indice - 1, novoNome);
+        String novoTelefone = utils.Entrada.lerTexto("Novo telefone: ");
+
+        Contato contato = contatos.get(indice - 1);
+
+        contato.setNome(novoNome);
+        contato.setTelefone(novoTelefone);
 
         System.out.println("Contato atualizado.");
     }
