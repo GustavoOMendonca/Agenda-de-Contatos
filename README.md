@@ -42,5 +42,7 @@ Este projeto foi desenvolvido com o objetivo de praticar:
 src/
 ├── Main.java
 ├── Cadastro.java
+├── Contato.java
 └── utils/
     └── Entrada.java
+```
