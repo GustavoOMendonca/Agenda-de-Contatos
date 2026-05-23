@@ -25,6 +25,17 @@ public class Contato {
         this.telefone = telefone;
     }
 
+    // Converte o objeto para formato de arquivo
+    public String paraLinha(){
+        return nome + ";" + telefone;
+    }
+
+    // Reconstrói o objeto usando a linha do arquivo
+    public static Contato deLinha(String linha){
+        String [] dados = linha.split(";");
+        return new Contato ( dados[0],dados[1]);
+    }
+
     @Override
     public String toString() {
 

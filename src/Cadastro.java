@@ -1,27 +1,46 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Cadastro {
 
-    private ArrayList<Contato> contatos = new ArrayList<>();
+    private List<Contato> contatos;
+
+    public Cadastro() {
+
+        contatos = Persistencia.carregar();
+    }
 
     public void adicionarContato() {
 
-        String nome = utils.Entrada.lerTexto("Digite o nome do contato: ");
+        String nome =
+                utils.Entrada.lerTexto(
+                        "Digite o nome do contato: "
+                );
 
-        String telefone = utils.Entrada.lerTexto("Digite o telefone: ");
+        String telefone =
+                utils.Entrada.lerTexto(
+                        "Digite o telefone: "
+                );
 
-        Contato contato = new Contato(nome, telefone);
+        Contato contato =
+                new Contato(nome, telefone);
 
         contatos.add(contato);
 
-        System.out.println("Contato adicionado com sucesso.");
+        Persistencia.salvar(contatos);
+
+        System.out.println(
+                "Contato adicionado com sucesso."
+        );
     }
 
     public void listarContatos() {
 
         if (contatos.isEmpty()) {
 
-            System.out.println("Nenhum contato cadastrado.");
+            System.out.println(
+                    "Nenhum contato cadastrado."
+            );
+
             return;
         }
 
@@ -29,19 +48,27 @@ public class Cadastro {
 
         for (int i = 0; i < contatos.size(); i++) {
 
-            System.out.println((i + 1) + " - " + contatos.get(i));
+            System.out.println(
+                    (i + 1) + " - " + contatos.get(i)
+            );
         }
     }
 
     public void buscarContato() {
 
-        String busca = utils.Entrada.lerTexto("Digite o nome do contato: ");
+        String busca =
+                utils.Entrada.lerTexto(
+                        "Digite o nome do contato: "
+                );
 
         boolean encontrado = false;
 
         for (Contato contato : contatos) {
 
-            if (contato.getNome().equalsIgnoreCase(busca)) {
+            if (
+                contato.getNome()
+                        .equalsIgnoreCase(busca)
+            ) {
 
                 System.out.println(contato);
 
@@ -51,7 +78,9 @@ public class Cadastro {
 
         if (!encontrado) {
 
-            System.out.println("Contato não encontrado.");
+            System.out.println(
+                    "Contato não encontrado."
+            );
         }
     }
 
@@ -63,24 +92,43 @@ public class Cadastro {
             return;
         }
 
-        int indice = utils.Entrada.lerInt("Digite o número do contato: ");
+        int indice =
+                utils.Entrada.lerInt(
+                        "Digite o número do contato: "
+                );
 
-        if (indice <= 0 || indice > contatos.size()) {
+        if (
+            indice <= 0 ||
+            indice > contatos.size()
+        ) {
 
             System.out.println("Contato inválido.");
+
             return;
         }
 
-        String novoNome = utils.Entrada.lerTexto("Novo nome: ");
+        String novoNome =
+                utils.Entrada.lerTexto(
+                        "Novo nome: "
+                );
 
-        String novoTelefone = utils.Entrada.lerTexto("Novo telefone: ");
+        String novoTelefone =
+                utils.Entrada.lerTexto(
+                        "Novo telefone: "
+                );
 
-        Contato contato = contatos.get(indice - 1);
+        Contato contato =
+                contatos.get(indice - 1);
 
         contato.setNome(novoNome);
+
         contato.setTelefone(novoTelefone);
 
-        System.out.println("Contato atualizado.");
+        Persistencia.salvar(contatos);
+
+        System.out.println(
+                "Contato atualizado."
+        );
     }
 
     public void removerContato() {
@@ -91,16 +139,27 @@ public class Cadastro {
             return;
         }
 
-        int indice = utils.Entrada.lerInt("Digite o número do contato: ");
+        int indice =
+                utils.Entrada.lerInt(
+                        "Digite o número do contato: "
+                );
 
-        if (indice <= 0 || indice > contatos.size()) {
+        if (
+            indice <= 0 ||
+            indice > contatos.size()
+        ) {
 
             System.out.println("Contato inválido.");
+
             return;
         }
 
         contatos.remove(indice - 1);
 
-        System.out.println("Contato removido.");
+        Persistencia.salvar(contatos);
+
+        System.out.println(
+                "Contato removido."
+        );
     }
 }
