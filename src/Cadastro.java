@@ -9,157 +9,44 @@ public class Cadastro {
         contatos = Persistencia.carregar();
     }
 
-    public void adicionarContato() {
+    public List<Contato> getContatos() {
+        return contatos;
+    }
 
-        String nome =
-                utils.Entrada.lerTexto(
-                        "Digite o nome do contato: "
-                );
-
-        String telefone =
-                utils.Entrada.lerTexto(
-                        "Digite o telefone: "
-                );
-
-        Contato contato =
-                new Contato(nome, telefone);
-
-        contatos.add(contato);
-
+    public void adicionar(String nome, String telefone) throws Exception {
+        validarDuplicado(nome, telefone, -1);
+        contatos.add(new Contato(nome, telefone));
         Persistencia.salvar(contatos);
-
-        System.out.println(
-                "Contato adicionado com sucesso."
-        );
     }
 
-    public void listarContatos() {
+    public void atualizar(int indice, String nome, String telefone) throws Exception {
+        if (indice < 0 || indice >= contatos.size()) throw new Exception("Contato inválido.");
+        
+        validarDuplicado(nome, telefone, indice);
+        
+        Contato contato = contatos.get(indice);
+        contato.setNome(nome);
+        contato.setTelefone(telefone);
+        Persistencia.salvar(contatos);
+    }
 
-        if (contatos.isEmpty()) {
-
-            System.out.println(
-                    "Nenhum contato cadastrado."
-            );
-
-            return;
+    public void remover(int indice) {
+        if (indice >= 0 && indice < contatos.size()) {
+            contatos.remove(indice);
+            Persistencia.salvar(contatos);
         }
+    }
 
-        System.out.println("\n===== CONTATOS =====");
-
+    private void validarDuplicado(String nome, String telefone, int indiceIgnorado) throws Exception {
         for (int i = 0; i < contatos.size(); i++) {
-
-            System.out.println(
-                    (i + 1) + " - " + contatos.get(i)
-            );
-        }
-    }
-
-    public void buscarContato() {
-
-        String busca =
-                utils.Entrada.lerTexto(
-                        "Digite o nome do contato: "
-                );
-
-        boolean encontrado = false;
-
-        for (Contato contato : contatos) {
-
-            if (
-                contato.getNome()
-                        .equalsIgnoreCase(busca)
-            ) {
-
-                System.out.println(contato);
-
-                encontrado = true;
+            if (i == indiceIgnorado) continue;
+            Contato c = contatos.get(i);
+            if (c.getNome().equalsIgnoreCase(nome)) {
+                throw new Exception("Este nome já está cadastrado.");
+            }
+            if (c.getTelefone().equals(telefone)) {
+                throw new Exception("Este telefone já está cadastrado.");
             }
         }
-
-        if (!encontrado) {
-
-            System.out.println(
-                    "Contato não encontrado."
-            );
-        }
-    }
-
-    public void atualizarContato() {
-
-        listarContatos();
-
-        if (contatos.isEmpty()) {
-            return;
-        }
-
-        int indice =
-                utils.Entrada.lerInt(
-                        "Digite o número do contato: "
-                );
-
-        if (
-            indice <= 0 ||
-            indice > contatos.size()
-        ) {
-
-            System.out.println("Contato inválido.");
-
-            return;
-        }
-
-        String novoNome =
-                utils.Entrada.lerTexto(
-                        "Novo nome: "
-                );
-
-        String novoTelefone =
-                utils.Entrada.lerTexto(
-                        "Novo telefone: "
-                );
-
-        Contato contato =
-                contatos.get(indice - 1);
-
-        contato.setNome(novoNome);
-
-        contato.setTelefone(novoTelefone);
-
-        Persistencia.salvar(contatos);
-
-        System.out.println(
-                "Contato atualizado."
-        );
-    }
-
-    public void removerContato() {
-
-        listarContatos();
-
-        if (contatos.isEmpty()) {
-            return;
-        }
-
-        int indice =
-                utils.Entrada.lerInt(
-                        "Digite o número do contato: "
-                );
-
-        if (
-            indice <= 0 ||
-            indice > contatos.size()
-        ) {
-
-            System.out.println("Contato inválido.");
-
-            return;
-        }
-
-        contatos.remove(indice - 1);
-
-        Persistencia.salvar(contatos);
-
-        System.out.println(
-                "Contato removido."
-        );
     }
 }
