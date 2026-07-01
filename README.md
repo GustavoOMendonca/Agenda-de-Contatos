@@ -62,4 +62,3 @@ src/
 5. A interface gráfica será aberta e o arquivo `contatos.txt` será criado/lido automaticamente na raiz do projeto.
 
 ---
-```
